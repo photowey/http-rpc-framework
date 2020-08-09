@@ -16,7 +16,6 @@
 package com.photowey.http.rpc.client.parameter;
 
 import com.photowey.http.rpc.client.annotation.ParameterProcessorMarker;
-import com.photowey.http.rpc.client.binding.ClientMethod;
 import com.photowey.http.rpc.client.binding.MethodSignature;
 import com.photowey.http.rpc.core.enums.TargetEnum;
 import com.photowey.http.rpc.core.exception.HRpcException;
@@ -59,7 +58,9 @@ public class RequestParamParameterProcessor implements ParameterProcessor {
         Annotation[] annotations = parameter.getAnnotations();
         Set<Annotation> annotationSets = new HashSet<>(Arrays.asList(annotations));
         List<Annotation> targets = HRpcUtils.toTarget(annotationSets, clazz);
-        log.info("the request params annotation order:[{}], size is:[{}]", this.getOrder(), targets.size());
+        if (log.isDebugEnabled()) {
+            log.info("the request params annotation order:[{}], size is:[{}]", this.getOrder(), targets.size());
+        }
         // handle @RequestParam
         if (!CollectionUtils.isEmpty(targets)) {
             for (Annotation annotation : targets) {
@@ -71,7 +72,9 @@ public class RequestParamParameterProcessor implements ParameterProcessor {
                     // check Map.class
                     if (type.equals(Map.class)) {
                         methodSignature.getQueryMapIndex().add(paramIndex);
-                        log.info("the request param type is MAP the index:[{}]", paramIndex);
+                        if (log.isDebugEnabled()) {
+                            log.info("the request param type is MAP the index:[{}]", paramIndex);
+                        }
                     } else {
                         alias = name;
                         methodSignature.getNoAliasParamIndex().put(alias, paramIndex);

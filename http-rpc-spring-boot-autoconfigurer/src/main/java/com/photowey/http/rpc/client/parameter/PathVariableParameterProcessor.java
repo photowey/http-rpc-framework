@@ -59,7 +59,9 @@ public class PathVariableParameterProcessor implements ParameterProcessor {
 
         Set<Annotation> annotationSets = new HashSet<>(Arrays.asList(annotations));
         List<Annotation> targets = HRpcUtils.toTarget(annotationSets, clazz);
-        log.info("the path annotation order:[{}], size is:[{}]", this.getOrder(), targets.size());
+        if (log.isDebugEnabled()) {
+            log.debug("the path annotation order:[{}], size is:[{}]", this.getOrder(), targets.size());
+        }
         for (Annotation annotation : targets) {
             String alias = ANNOTATION.cast(annotation).value();
             String name = parameter.getName();

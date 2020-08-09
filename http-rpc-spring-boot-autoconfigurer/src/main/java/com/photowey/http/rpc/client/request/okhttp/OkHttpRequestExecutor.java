@@ -20,7 +20,6 @@ import com.photowey.http.rpc.client.binding.ClientMethod;
 import com.photowey.http.rpc.client.binding.MethodSignature;
 import com.photowey.http.rpc.client.binding.RequestCommand;
 import com.photowey.http.rpc.client.config.HRpcConfiguration;
-import com.photowey.http.rpc.client.request.executor.RequestExecutor;
 import com.photowey.http.rpc.client.request.trust.X509TrustManagerImpl;
 import com.photowey.http.rpc.core.enums.ExecutorEnum;
 import com.photowey.http.rpc.core.exception.HRpcException;
@@ -32,8 +31,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ClassUtils;
@@ -56,13 +53,12 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/08/08
  * @since 1.0.0
  */
-@ConditionalOnClass(OkHttpClient.class)
 @RequestExecutorMarker(value = ExecutorEnum.OK_HTTP)
-public class OkHttpRequestExecutor implements RequestExecutor {
+public class OkHttpRequestExecutor implements IOkHttpRequestExecutor {
 
-    private static final Logger log = LoggerFactory.getLogger(OkHttpRequestExecutor.class);
+    protected static final Logger log = LoggerFactory.getLogger(OkHttpRequestExecutor.class);
 
-    private final HRpcConfiguration hrpcConfiguration;
+    protected final HRpcConfiguration hrpcConfiguration;
 
     public OkHttpRequestExecutor(HRpcConfiguration hrpcConfiguration) {
         this.hrpcConfiguration = hrpcConfiguration;
@@ -79,7 +75,12 @@ public class OkHttpRequestExecutor implements RequestExecutor {
 
         String bodyStr = "";
 
-        OkHttpClient client = this.determineClient(url);
+        OkHttpClient.Builder builder = this.determineClient(url);
+
+        // hook
+        this.preBuildClient(builder);
+
+        OkHttpClient client = this.buildOkHttpClient(builder);
         Request request = null;
         switch (requestMethod) {
             case GET:
@@ -99,6 +100,9 @@ public class OkHttpRequestExecutor implements RequestExecutor {
             default:
                 break;
         }
+
+        // hook
+        this.preExecuteRequest(client, request);
 
         // The Response
         Response response = this.executeRequest(client, request);
@@ -141,13 +145,27 @@ public class OkHttpRequestExecutor implements RequestExecutor {
         }
     }
 
+    protected void preExecuteRequest(OkHttpClient client, Request request) {
+        // do some for sub-class if necessary
+    }
+
+    protected OkHttpClient buildOkHttpClient(OkHttpClient.Builder builder) {
+        OkHttpClient client = builder.build();
+
+        return client;
+    }
+
+    protected void preBuildClient(OkHttpClient.Builder builder) {
+        // do some for sub-class if necessary
+    }
+
     // ======================================================================= REQUEST
 
-    private Request populateGetRequest(String url) {
+    protected Request populateGetRequest(String url) {
         return this.populateRequest(url, "", RequestMethod.GET, null);
     }
 
-    private Request populateGetRequest(String url, Map<String, String> headers) {
+    protected Request populateGetRequest(String url, Map<String, String> headers) {
         return this.populateRequest(url, "", RequestMethod.GET, headers);
     }
 
@@ -197,13 +215,13 @@ public class OkHttpRequestExecutor implements RequestExecutor {
 
     // ======================================================================= CLIENT
 
-    public OkHttpClient determineClient(String url) throws RuntimeException {
-        OkHttpClient client = this.populateOkHttpClient(url);
+    public OkHttpClient.Builder determineClient(String url) throws RuntimeException {
+        OkHttpClient.Builder builder = this.populateOkHttpClient(url);
 
-        return client;
+        return builder;
     }
 
-    public OkHttpClient populateOkHttpClient(final String url) {
+    public OkHttpClient.Builder populateOkHttpClient(final String url) {
         OkHttpClient.Builder builder = new OkHttpClient()
                 .newBuilder()
                 .hostnameVerifier(this.hrpcConfiguration.getHostnameVerifier())
@@ -216,7 +234,7 @@ public class OkHttpRequestExecutor implements RequestExecutor {
             builder.sslSocketFactory(sslSocketFactory, this.hrpcConfiguration.getTrustManager());
         }
 
-        return builder.build();
+        return builder;
     }
 
     // ======================================================================= EXEC

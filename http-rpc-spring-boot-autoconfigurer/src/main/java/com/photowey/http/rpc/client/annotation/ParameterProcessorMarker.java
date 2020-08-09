@@ -17,10 +17,7 @@ package com.photowey.http.rpc.client.annotation;
 
 import org.springframework.stereotype.Component;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Mark the modified class is ParameterProcessor
@@ -33,5 +30,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Component
+@Inherited
 public @interface ParameterProcessorMarker {
 }

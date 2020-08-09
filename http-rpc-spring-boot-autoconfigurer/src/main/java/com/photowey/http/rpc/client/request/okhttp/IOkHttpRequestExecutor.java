@@ -13,29 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.photowey.http.rpc.client.annotation;
+package com.photowey.http.rpc.client.request.okhttp;
 
-import com.photowey.http.rpc.core.enums.ExecutorEnum;
-
-import java.lang.annotation.*;
+import com.photowey.http.rpc.client.request.executor.RequestExecutor;
 
 /**
- * Mark the modified class is HTTP Executor
+ * The OkHttp RequestExecutor
  *
  * @author WcJun
- * @date 2020/08/08
- * @see com.photowey.http.rpc.client.request.executor.RequestExecutor
+ * @date 2020/08/09
  * @since 1.0.0
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-@Inherited
-public @interface RequestExecutorMarker {
-
-    /**
-     * The HTTP executor type
-     *
-     * @return the expect executor Type
-     */
-    ExecutorEnum value() default ExecutorEnum.OK_HTTP;
+public interface IOkHttpRequestExecutor extends RequestExecutor {
 }
