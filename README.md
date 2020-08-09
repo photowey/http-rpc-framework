@@ -91,7 +91,7 @@ public interface HRpcProviderClient {
 
 ```java
 // @{com.photowey.http.rpc.client.request.okhttp.OkHttpRequestExecutor}
-// OHKttp
+// OKHttp
 
 // @{link com.photowey.http.rpc.client.request.httpclient.HttpClientRequestExecutor}
 // Apache Http Client
