@@ -98,3 +98,33 @@ public interface HRpcProviderClient {
 // However, it does not currently support
 ```
 
+
+
+## 8.`extension the OkHttp request executor`
+
+```java
+// ./http-rpc-test/com.photowey.consumer.config.HttpClientRequestExecutorExt
+// At this time, the OkHttpRequestExecutor executor will not be added to the IOC
+@Slf4j
+@Component
+public class HttpClientRequestExecutorExt extends OkHttpRequestExecutor {
+
+    public HttpClientRequestExecutorExt(HRpcConfiguration hrpcConfiguration) {
+        super(hrpcConfiguration);
+    }
+
+    @Override
+    protected void preBuildClient(OkHttpClient.Builder builder) {
+        super.preBuildClient(builder);
+        log.info("execute the preBuildClient() in sub-class:[{}]", this.getClass().getSimpleName());
+    }
+
+    @Override
+    protected void preExecuteRequest(OkHttpClient client, Request request) {
+        super.preExecuteRequest(client, request);
+        log.info("execute the preExecuteRequest() in sub-class:[{}]", this.getClass().getSimpleName());
+    }
+}
+
+```
+
