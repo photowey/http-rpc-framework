@@ -1,0 +1,13 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: consumer
+
+hrpc:
+  client:
+    #@see com.photowey.http.rpc.core.enums.ExecutorEnum
+    executor-type: "OK_HTTP"
+    # connect-timeout: 6
+    # read-timeout: 60
+    # write-timeout: 60
