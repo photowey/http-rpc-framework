@@ -24,15 +24,11 @@
 
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
+
+        <httpclient.version>4.5.5</httpclient.version>
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-        </dependency>
-
     </dependencies>
 
     <dependencyManagement>
@@ -44,6 +40,12 @@
                 <version>${okhttp3.version}</version>
             </dependency>
 
+            <!-- ========================================= HTTP-CLIENT -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
             <!-- ========================================= JACKSON -->
 
             <dependency>
@@ -147,5 +149,22 @@
         <module>http-rpc-spring-boot-autoconfigurer</module>
         <module>http-rpc-spring-boot-starter</module>
     </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Nexus Release Repository</name>
+            <url>
+                http://47.105.115.124:8081/repository/cloud-tube-releases/
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>
+                http://47.105.115.124:8081/repository/cloud-tube-snapshots/
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

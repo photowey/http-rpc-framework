@@ -20,11 +20,14 @@ import com.photowey.http.rpc.client.context.RequestContextFactory;
 import com.photowey.http.rpc.client.interceptor.DefaultRequestInterceptor;
 import com.photowey.http.rpc.client.interceptor.RequestInterceptor;
 import com.photowey.http.rpc.client.properties.HRpcClientProperties;
+import com.photowey.http.rpc.client.request.httpclient.HttpClientRequestExecutor;
+import com.photowey.http.rpc.client.request.httpclient.IHttpClientRequestExecutor;
 import com.photowey.http.rpc.client.request.okhttp.IOkHttpRequestExecutor;
 import com.photowey.http.rpc.client.request.okhttp.OkHttpRequestExecutor;
 import com.photowey.http.rpc.client.request.trust.HostnameVerifierImpl;
 import com.photowey.http.rpc.client.request.trust.X509TrustManagerImpl;
 import okhttp3.OkHttpClient;
+import org.apache.http.HttpHost;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -84,5 +87,18 @@ public class HRpcConfigurer {
     @ConditionalOnMissingBean(IOkHttpRequestExecutor.class)
     public IOkHttpRequestExecutor okHtpRequestExecutor(HRpcConfiguration hrpcConfiguration) {
         return new OkHttpRequestExecutor(hrpcConfiguration);
+    }
+
+    /**
+     * custom define the HttpClientRequestExecutor If necessary for Sub-Class
+     *
+     * @param hrpcConfiguration {@link HRpcConfiguration}
+     * @return {@link IHttpClientRequestExecutor}
+     */
+    @Bean
+    @ConditionalOnClass(HttpHost.class)
+    @ConditionalOnMissingBean(IHttpClientRequestExecutor.class)
+    public IHttpClientRequestExecutor httpClientRequestExecutor(HRpcConfiguration hrpcConfiguration) {
+        return new HttpClientRequestExecutor(hrpcConfiguration);
     }
 }

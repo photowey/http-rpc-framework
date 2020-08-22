@@ -95,7 +95,6 @@ public interface HRpcProviderClient {
 
 // @{link com.photowey.http.rpc.client.request.httpclient.HttpClientRequestExecutor}
 // Apache Http Client
-// However, it does not currently support
 ```
 
 
@@ -103,11 +102,13 @@ public interface HRpcProviderClient {
 ## 8.`extension the OkHttp request executor`
 
 ```java
-// ./http-rpc-test/com.photowey.consumer.config.HttpClientRequestExecutorExt
+// ./http-rpc-test/com.photowey.consumer.config.OkHttpRequestExecutorExt
 // At this time, the OkHttpRequestExecutor executor will not be added to the IOC
+// E.G.
+
 @Slf4j
 @Component
-public class HttpClientRequestExecutorExt extends OkHttpRequestExecutor {
+public class OkHttpRequestExecutorExt extends OkHttpRequestExecutor {
 
     public HttpClientRequestExecutorExt(HRpcConfiguration hrpcConfiguration) {
         super(hrpcConfiguration);
@@ -125,6 +126,29 @@ public class HttpClientRequestExecutorExt extends OkHttpRequestExecutor {
         log.info("execute the preExecuteRequest() in sub-class:[{}]", this.getClass().getSimpleName());
     }
 }
+```
 
+
+
+## 9.`extension the Http Client request executor`
+
+```java
+// ./http-rpc-test/com.photowey.consumer.config.HttpClientRequestExecutorExt
+// At this time, the HttpClientRequestExecutor executor will not be added to the IOC
+// E.G.
+@Slf4j
+@Component
+public class HttpClientRequestExecutorExt extends HttpClientRequestExecutor {
+
+    public HttpClientRequestExecutorExt(HRpcConfiguration hrpcConfiguration) {
+        super(hrpcConfiguration);
+    }
+
+    @Override
+    public void requestEnhance(HttpEntityEnclosingRequestBase requestBase) {
+        super.requestEnhance(requestBase);
+        log.info("execute the requestEnhance() in sub-class:[{}]", this.getClass().getSimpleName());
+    }
+}
 ```
 

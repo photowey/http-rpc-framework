@@ -18,7 +18,6 @@ package com.photowey.http.rpc.client.request.executor;
 import com.photowey.http.rpc.client.binding.ClientMethod;
 import com.photowey.http.rpc.core.exception.HRpcException;
 import okhttp3.MediaType;
-import org.springframework.context.annotation.Primary;
 
 import java.io.IOException;
 
@@ -32,9 +31,19 @@ import java.io.IOException;
 public interface RequestExecutor {
 
     MediaType JSON_APPLICATION = MediaType.parse("application/json; charset=utf-8");
+    String HTTP = "http";
     String HTTPS = "https";
     String HTTPS_SSL_V3 = "SSLv3";
     String HTTPS_POST_SUNJSSE = "SunJSSE";
+    int REQUEST_OK = 200;
+    String HTTP_GET = "GET";
+    String CONTENT_TYPE_JSON = "application/json;charset=utf-8";
+    String CONTENT_TYPE = "Content-Type";
+
+    /**
+     * UTF-8
+     */
+    String CHARSET_UTF8 = "UTF-8";
 
     /**
      * execute the HTTP request

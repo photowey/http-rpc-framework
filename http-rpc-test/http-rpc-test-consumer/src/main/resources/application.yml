@@ -7,7 +7,7 @@ spring:
 hrpc:
   client:
     #@see com.photowey.http.rpc.core.enums.ExecutorEnum
-    executor-type: "OK_HTTP"
+    executor-type: "APACHE_HTTP_CLIENT"
     # connect-timeout: 6
     # read-timeout: 60
     # write-timeout: 60

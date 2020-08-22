@@ -16,30 +16,37 @@
 package com.photowey.consumer.config;
 
 import com.photowey.http.rpc.client.config.HRpcConfiguration;
-import com.photowey.http.rpc.client.request.httpclient.HttpClientRequestExecutor;
+import com.photowey.http.rpc.client.request.okhttp.OkHttpRequestExecutor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.springframework.stereotype.Component;
 
 /**
- * this is a sample, How to extension the IHttpClientRequestExecutor
- * HttpClientRequestExecutor Ext
+ * this is a sample, How to extension the IOkHttpRequestExecutor
+ * OkHttpRequestExecutor Ext
  *
  * @author WcJun
- * @date 2020/08/22
+ * @date 2020/08/10
  * @since 1.0.0
  */
 @Slf4j
 @Component
-public class HttpClientRequestExecutorExt extends HttpClientRequestExecutor {
+public class OkHttpRequestExecutorExt extends OkHttpRequestExecutor {
 
-    public HttpClientRequestExecutorExt(HRpcConfiguration hrpcConfiguration) {
+    public OkHttpRequestExecutorExt(HRpcConfiguration hrpcConfiguration) {
         super(hrpcConfiguration);
     }
 
     @Override
-    public void requestEnhance(HttpEntityEnclosingRequestBase requestBase) {
-        super.requestEnhance(requestBase);
-        log.info("execute the requestEnhance() in sub-class:[{}]", this.getClass().getSimpleName());
+    protected void preBuildClient(OkHttpClient.Builder builder) {
+        super.preBuildClient(builder);
+        log.info("execute the preBuildClient() in sub-class:[{}]", this.getClass().getSimpleName());
+    }
+
+    @Override
+    protected void preExecuteRequest(OkHttpClient client, Request request) {
+        super.preExecuteRequest(client, request);
+        log.info("execute the preExecuteRequest() in sub-class:[{}]", this.getClass().getSimpleName());
     }
 }
