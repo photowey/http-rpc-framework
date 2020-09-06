@@ -195,7 +195,7 @@ public class HRpcConfiguration {
     public <T extends Annotation> RemoteInfo parseHttpAnnotation(Method target, T httpAnnotation) {
         for (AnnotationParser annotationParser : this.annotationParsers) {
             if (annotationParser.supports(target)) {
-                return annotationParser.parse(httpAnnotation);
+                return annotationParser.parse(httpAnnotation, target, this.hrpcClientProperties);
             }
         }
 

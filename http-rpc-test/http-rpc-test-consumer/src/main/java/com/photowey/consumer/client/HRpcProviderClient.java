@@ -18,8 +18,12 @@ package com.photowey.consumer.client;
 import com.photowey.consumer.domain.HealthDTO;
 import com.photowey.http.rpc.client.annotation.HRpcClient;
 import com.photowey.http.rpc.core.annotation.*;
+import com.photowey.http.rpc.core.enums.HostTypeEnum;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
@@ -30,10 +34,15 @@ import java.util.Map;
  * @date 2020/08/09
  * @since 1.0.0
  */
-@HRpcClient(value = "hrpcProviderClient")
+@HRpcClient(value = "provider")
 public interface HRpcProviderClient {
 
-    @HttpGet(protocol = "http", host = "localhost:8888", uri = "/provider/test/get/{orderId}/{userId}")
+    @HttpGet(
+            protocol = "http",
+            host = "localhost:8888",
+            uri = "/provider/test/get/{orderId}/{userId}",
+            hostType = HostTypeEnum.DYNAMIC
+    )
     HealthDTO testGet(
             @PathVariable("orderId") Long orderId, @PathVariable("userId") Long userId,
             @RequestHeader("app") String app, @RequestHeader("port") Integer port,

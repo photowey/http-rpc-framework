@@ -17,10 +17,14 @@ package com.photowey.consumer.controller;
 
 import com.photowey.consumer.client.HRpcProviderClient;
 import com.photowey.consumer.domain.HealthDTO;
+import com.photowey.http.rpc.client.properties.HRpcClientProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +42,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/consumer")
 @Api(value = "Consumer", tags = "Consumer-module", description = "Consumer-Entrance")
-public class ConsumerController {
+public class ConsumerController implements ApplicationContextAware {
 
     @Value("${spring.application.name}")
     private String app;
@@ -48,6 +52,13 @@ public class ConsumerController {
 
     @Autowired
     private HRpcProviderClient hrpcProviderClient;
+
+    private ApplicationContext applicationContext;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
     /**
      * GET :/test/get
@@ -160,5 +171,20 @@ public class ConsumerController {
         requestBody.setPort(port);
         ResponseEntity<HealthDTO> testPost = this.hrpcProviderClient.testDelete(939L, 9527L, requestBody);
         return testPost;
+    }
+
+    /**
+     * GET :/properties
+     * return the config info for check the specific details of the config
+     *
+     * @return {@link HRpcClientProperties}
+     * @see * http://localhost:9999/consumer/properties
+     * @since 1.1.0
+     */
+    @GetMapping("/properties")
+    @ApiOperation(value = "the config info", notes = "the config info")
+    public ResponseEntity<HRpcClientProperties> properties() {
+        HRpcClientProperties properties = this.applicationContext.getBean(HRpcClientProperties.class);
+        return new ResponseEntity<>(properties, HttpStatus.OK);
     }
 }

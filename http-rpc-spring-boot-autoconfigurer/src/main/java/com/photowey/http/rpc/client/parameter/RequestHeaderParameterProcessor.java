@@ -16,10 +16,9 @@
 package com.photowey.http.rpc.client.parameter;
 
 import com.photowey.http.rpc.client.annotation.ParameterProcessorMarker;
-import com.photowey.http.rpc.client.binding.ClientMethod;
 import com.photowey.http.rpc.client.binding.MethodSignature;
+import com.photowey.http.rpc.core.constant.HRpcConstants;
 import com.photowey.http.rpc.core.enums.TargetEnum;
-import com.photowey.http.rpc.core.util.HRpcConstants;
 import com.photowey.http.rpc.core.util.HRpcUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestHeader;

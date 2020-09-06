@@ -57,6 +57,7 @@ public @interface HRpcClient {
      * @return the service id with optional protocol prefix
      * @deprecated use {@link #name() name} instead
      */
+    @Deprecated
     String serviceId() default "";
 
     /**

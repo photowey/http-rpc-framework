@@ -129,7 +129,7 @@ public class HttpClientRequestExecutor implements IHttpClientRequestExecutor {
                 }
             }
         } catch (Exception e) {
-            throw new HRpcException("handle the remote invoke with  Apache http client exception");
+            throw new HRpcException("handle the remote invoke with Apache http client exception");
         }
 
 

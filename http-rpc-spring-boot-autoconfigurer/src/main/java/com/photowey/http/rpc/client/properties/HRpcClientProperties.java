@@ -15,9 +15,12 @@
  */
 package com.photowey.http.rpc.client.properties;
 
+import com.photowey.http.rpc.core.enums.ClusterStrategyEnum;
 import com.photowey.http.rpc.core.enums.ExecutorEnum;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
 
 /**
  * Http Rpc
@@ -32,7 +35,22 @@ public class HRpcClientProperties {
 
     public static final String HRPC_CLIENT_REGISTRY_PREFIX = "hrpc.client";
 
+    /**
+     * the default http executor type
+     */
     private ExecutorEnum executorType = ExecutorEnum.OK_HTTP;
+    /**
+     * the default strategy
+     *
+     * @since 1.1.0
+     */
+    private ClusterStrategyEnum clusterStrategy = ClusterStrategyEnum.POLLING;
+    /**
+     * the remote service info
+     *
+     * @since 1.1.0
+     */
+    private List<ServiceInfo> services;
 
     private int connectTimeout = 6;
     private int readTimeout = 60;
@@ -44,6 +62,14 @@ public class HRpcClientProperties {
 
     public void setExecutorType(ExecutorEnum executorType) {
         this.executorType = executorType;
+    }
+
+    public ClusterStrategyEnum getClusterStrategy() {
+        return clusterStrategy;
+    }
+
+    public void setClusterStrategy(ClusterStrategyEnum clusterStrategy) {
+        this.clusterStrategy = clusterStrategy;
     }
 
     public int getConnectTimeout() {
@@ -68,5 +94,13 @@ public class HRpcClientProperties {
 
     public void setWriteTimeout(int writeTimeout) {
         this.writeTimeout = writeTimeout;
+    }
+
+    public List<ServiceInfo> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceInfo> services) {
+        this.services = services;
     }
 }

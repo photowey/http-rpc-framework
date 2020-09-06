@@ -48,7 +48,7 @@ import javax.net.ssl.X509TrustManager;
  */
 @Configuration
 @Import(HRpcConfiguration.class)
-@ComponentScan(basePackages = "com.photowey.http.rpc.client")
+@ComponentScan(basePackages = {"com.photowey.http.rpc.client", "com.photowey.http.rpc.client.cluster"})
 @EnableConfigurationProperties(HRpcClientProperties.class)
 public class HRpcConfigurer {
 

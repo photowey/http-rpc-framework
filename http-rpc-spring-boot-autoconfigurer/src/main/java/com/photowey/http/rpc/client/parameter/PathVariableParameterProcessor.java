@@ -17,9 +17,9 @@ package com.photowey.http.rpc.client.parameter;
 
 import com.photowey.http.rpc.client.annotation.ParameterProcessorMarker;
 import com.photowey.http.rpc.client.binding.MethodSignature;
+import com.photowey.http.rpc.core.constant.HRpcConstants;
 import com.photowey.http.rpc.core.enums.TargetEnum;
 import com.photowey.http.rpc.core.exception.HRpcException;
-import com.photowey.http.rpc.core.util.HRpcConstants;
 import com.photowey.http.rpc.core.util.HRpcUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

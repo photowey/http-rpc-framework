@@ -15,6 +15,7 @@
  */
 package com.photowey.http.rpc.client.parser;
 
+import com.photowey.http.rpc.client.properties.HRpcClientProperties;
 import com.photowey.http.rpc.core.model.RemoteInfo;
 
 import java.lang.annotation.Annotation;
@@ -41,7 +42,18 @@ public interface AnnotationParser<T extends Annotation> {
      * parse the HTTP Annotation
      *
      * @param annotation the Annotation
-     * @return
+     * @return {@link RemoteInfo}
      */
+    @Deprecated
     RemoteInfo parse(T annotation);
+
+    /**
+     * parse the HTTP Annotation
+     *
+     * @param annotation the Annotation
+     * @param properties the config properties {@link HRpcClientProperties}
+     * @return {@link RemoteInfo}
+     * @since 1.1.0
+     */
+    RemoteInfo parse(T annotation, Method target, HRpcClientProperties properties);
 }

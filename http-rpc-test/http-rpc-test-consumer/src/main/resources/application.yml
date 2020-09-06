@@ -6,8 +6,17 @@ spring:
 
 hrpc:
   client:
-    #@see com.photowey.http.rpc.core.enums.ExecutorEnum
+    # @see com.photowey.http.rpc.core.enums.ExecutorEnum
     executor-type: "APACHE_HTTP_CLIENT"
     # connect-timeout: 6
     # read-timeout: 60
     # write-timeout: 60
+    # @see com.photowey.http.rpc.core.enums.ClusterStrategyEnum
+    # default is: POLLING
+    # @since 1.1.0
+    cluster-strategy: "RANDOM"
+    services:
+      # @see com.photowey.consumer.client.HRpcProviderClient#HRpcClient.value()
+      - service: "provider"
+        routes:
+          - {ip: "192.168.0.5", port: 8888}

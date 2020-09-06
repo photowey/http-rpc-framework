@@ -15,6 +15,8 @@
  */
 package com.photowey.http.rpc.core.annotation;
 
+import com.photowey.http.rpc.core.enums.HostTypeEnum;
+
 import java.lang.annotation.*;
 
 /**
@@ -44,6 +46,14 @@ public @interface HttpGet {
      * @return
      */
     String host() default "localhost:8080";
+
+    /**
+     * the host type
+     *
+     * @return {@link HostTypeEnum}
+     * @since 1.1.0
+     */
+    HostTypeEnum hostType() default HostTypeEnum.STATIC;
 
     /**
      * URI

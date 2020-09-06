@@ -16,10 +16,11 @@
 package com.photowey.http.rpc.client.parser;
 
 import com.photowey.http.rpc.client.annotation.AnnotationParserMarker;
-import com.photowey.http.rpc.core.annotation.HttpDelete;
-import com.photowey.http.rpc.core.annotation.HttpGet;
+import com.photowey.http.rpc.client.properties.HRpcClientProperties;
 import com.photowey.http.rpc.core.annotation.HttpPut;
+import com.photowey.http.rpc.core.enums.HostTypeEnum;
 import com.photowey.http.rpc.core.model.RemoteInfo;
+import org.springframework.context.ApplicationContextAware;
 
 import java.lang.reflect.Method;
 
@@ -31,7 +32,7 @@ import java.lang.reflect.Method;
  * @since 1.0.0
  */
 @AnnotationParserMarker
-public class HttpPutAnnotationParser implements AnnotationParser<HttpPut> {
+public class HttpPutAnnotationParser extends AbstractAnnotationParser implements AnnotationParser<HttpPut>, ApplicationContextAware {
 
     @Override
     public boolean supports(Method target) {
@@ -39,9 +40,22 @@ public class HttpPutAnnotationParser implements AnnotationParser<HttpPut> {
     }
 
     @Override
+    @Deprecated
     public RemoteInfo parse(HttpPut httpPut) {
         String protocol = httpPut.protocol();
         String host = httpPut.host();
+        String uri = httpPut.uri();
+        uri = uri.replaceAll("^/*", "");
+
+        return new RemoteInfo(protocol, host, uri);
+    }
+
+    @Override
+    public RemoteInfo parse(HttpPut httpPut, Method target, HRpcClientProperties properties) {
+        String protocol = httpPut.protocol();
+        String host = httpPut.host();
+        HostTypeEnum hostType = httpPut.hostType();
+        host = this.determineHost(host, hostType, target, properties);
         String uri = httpPut.uri();
         uri = uri.replaceAll("^/*", "");
 

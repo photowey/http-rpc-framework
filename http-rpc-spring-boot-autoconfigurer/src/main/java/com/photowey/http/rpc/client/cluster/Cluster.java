@@ -13,18 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.photowey.http.rpc.core.util;
+package com.photowey.http.rpc.client.cluster;
+
+import com.photowey.http.rpc.client.cluster.strategy.ClusterStrategySelector;
+import com.photowey.http.rpc.core.enums.ClusterStrategyEnum;
 
 /**
- * HRpcConstants
+ * the Cluster mode
  *
  * @author WcJun
- * @date 2020/08/08
- * @since 1.0.0
+ * @date 2020/09/06
+ * @since 1.1.0
  */
-public interface HRpcConstants {
+public interface Cluster {
 
-    String TEMPLATE_URI = "{}://{}/{}";
-
-    String COMPILE_ARG_PREFIX = "arg";
+    /**
+     * determine the strategy selector in cluster mode
+     *
+     * @param clusterStrategy the strategy {@link ClusterStrategyEnum}
+     * @return the target strategy selector
+     */
+    ClusterStrategySelector determineClusterStrategy(ClusterStrategyEnum clusterStrategy);
 }

@@ -15,7 +15,7 @@
  */
 package com.photowey.http.rpc.core.model;
 
-import com.photowey.http.rpc.core.util.HRpcConstants;
+import com.photowey.http.rpc.core.constant.HRpcConstants;
 import com.photowey.http.rpc.core.util.StringFormatUtils;
 
 import java.io.Serializable;

@@ -16,8 +16,11 @@
 package com.photowey.http.rpc.client.parser;
 
 import com.photowey.http.rpc.client.annotation.AnnotationParserMarker;
+import com.photowey.http.rpc.client.properties.HRpcClientProperties;
 import com.photowey.http.rpc.core.annotation.HttpDelete;
+import com.photowey.http.rpc.core.enums.HostTypeEnum;
 import com.photowey.http.rpc.core.model.RemoteInfo;
+import org.springframework.context.ApplicationContextAware;
 
 import java.lang.reflect.Method;
 
@@ -29,17 +32,44 @@ import java.lang.reflect.Method;
  * @since 1.0.0
  */
 @AnnotationParserMarker
-public class HttpDeleteAnnotationParser implements AnnotationParser<HttpDelete> {
+public class HttpDeleteAnnotationParser extends AbstractAnnotationParser implements AnnotationParser<HttpDelete>, ApplicationContextAware {
 
     @Override
     public boolean supports(Method target) {
         return target.isAnnotationPresent(HttpDelete.class);
     }
 
+    /**
+     * parse the HTTP Annotation
+     *
+     * @param httpDelete the Annotation
+     * @return {@link RemoteInfo}
+     */
     @Override
+    @Deprecated
     public RemoteInfo parse(HttpDelete httpDelete) {
         String protocol = httpDelete.protocol();
         String host = httpDelete.host();
+        String uri = httpDelete.uri();
+        uri = uri.replaceAll("^/*", "");
+
+        return new RemoteInfo(protocol, host, uri);
+    }
+
+    /**
+     * parse the HTTP Annotation
+     *
+     * @param httpDelete the Annotation
+     * @param properties the config properties {@link HRpcClientProperties}
+     * @return {@link RemoteInfo}
+     * @since 1.1.0
+     */
+    @Override
+    public RemoteInfo parse(HttpDelete httpDelete, Method target, HRpcClientProperties properties) {
+        String protocol = httpDelete.protocol();
+        String host = httpDelete.host();
+        HostTypeEnum hostType = httpDelete.hostType();
+        host = this.determineHost(host, hostType, target, properties);
         String uri = httpDelete.uri();
         uri = uri.replaceAll("^/*", "");
 

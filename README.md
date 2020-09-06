@@ -3,6 +3,7 @@
 > `Http ` Client package similar to `FeignClient ` writing
 
 
+# v1.0.0
 
 ## 1.`import`
 
@@ -150,5 +151,69 @@ public class HttpClientRequestExecutorExt extends HttpClientRequestExecutor {
         log.info("execute the requestEnhance() in sub-class:[{}]", this.getClass().getSimpleName());
     }
 }
+```
+
+
+# v1.1.0
+
+```text
+1.Support the cluster mode. there are fewer applicable scenarios, unless there is no support from a registry, such as Nacos.
+2.The strategy impl in package: com.photowey.http.rpc.client.cluster
+```
+## 1.`import`
+
+```xml
+<dependency>
+    <groupId>com.photowey</groupId>
+    <artifactId>http-rpc-spring-boot-starter</artifactId>
+    <version>1.1.0</version>
+</dependency>
+```
+
+## 2.modify the consumer's client config
+```java
+// the value() = provider must be IN config -> hrpc.client.services.service
+@HRpcClient(value = "provider")
+public interface HRpcProviderClient {
+    
+}
+```
+
+## 2.the config need modify,if in cluster mode.
+```yml
+hrpc:
+  client:
+    # @see com.photowey.http.rpc.core.enums.ExecutorEnum
+    executor-type: "APACHE_HTTP_CLIENT"
+    # connect-timeout: 6
+    # read-timeout: 60
+    # write-timeout: 60
+    # @see com.photowey.http.rpc.core.enums.ClusterStrategyEnum
+    # default is: POLLING
+    # @since 1.1.0
+    cluster-strategy: "RANDOM"
+    services:
+      # @see com.photowey.consumer.client.HRpcProviderClient#HRpcClient.value()
+      - service: "provider"
+        routes:
+          - {ip: "192.168.0.5", port: 8888}
+```
+
+## 3.modify the consumer's client method Annotation
+```java
+// HttpGet.hostType IN (STATIC, DYNAMIC)
+// STATIC: use the annotation host() value  
+// DYNAMIC: find the route info in config -> hrpc.client.services.service by HRpcClient.value()
+@HttpGet(
+        protocol = "http",
+        host = "localhost:8888",
+        uri = "/provider/test/get/{orderId}/{userId}",
+        hostType = HostTypeEnum.DYNAMIC
+)
+HealthDTO testGet(
+        @PathVariable("orderId") Long orderId, @PathVariable("userId") Long userId,
+        @RequestHeader("app") String app, @RequestHeader("port") Integer port,
+        @RequestParam Map<String, Object> additional
+);
 ```
 
