@@ -274,7 +274,8 @@ public class HttpClientRequestExecutor implements IHttpClientRequestExecutor {
     private SSLContext createIgnoreVerifySSL() throws NoSuchProviderException,
             NoSuchAlgorithmException, KeyManagementException {
         TrustManager[] tm = {new X509TrustManagerImpl()};
-        SSLContext sslContext = SSLContext.getInstance(HTTPS_SSL_V3, HTTPS_POST_SUNJSSE);
+        // SSLContext sslContext = SSLContext.getInstance(HTTPS_SSL_V3, HTTPS_POST_SUNJSSE);
+        SSLContext sslContext = SSLContext.getInstance(HTTPS_TLS);
         sslContext.init(null, tm, new SecureRandom());
 
         return sslContext;

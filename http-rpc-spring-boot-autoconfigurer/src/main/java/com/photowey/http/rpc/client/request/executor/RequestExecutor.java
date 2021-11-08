@@ -34,6 +34,7 @@ public interface RequestExecutor {
     String HTTP = "http";
     String HTTPS = "https";
     String HTTPS_SSL_V3 = "SSLv3";
+    String HTTPS_TLS = "TLS";
     String HTTPS_POST_SUNJSSE = "SunJSSE";
     int REQUEST_OK = 200;
     String HTTP_GET = "GET";

@@ -268,7 +268,8 @@ public class OkHttpRequestExecutor implements IOkHttpRequestExecutor {
         SSLSocketFactory sslSocketFactory = null;
         try {
             TrustManager[] tm = {new X509TrustManagerImpl()};
-            SSLContext sslContext = SSLContext.getInstance(HTTPS_SSL_V3, HTTPS_POST_SUNJSSE);
+            // SSLContext sslContext = SSLContext.getInstance(HTTPS_SSL_V3, HTTPS_POST_SUNJSSE);
+            SSLContext sslContext = SSLContext.getInstance(HTTPS_TLS);
             sslContext.init(null, tm, new SecureRandom());
             sslSocketFactory = sslContext.getSocketFactory();
         } catch (Exception e) {
